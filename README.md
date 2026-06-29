@@ -1,155 +1,155 @@
 # Resume Agent — 面试复盘积累系统
 
-> 贴面经 → 结构化存储 → 岗位匹配 → 弱点攻克。为求职者打造的面试备战闭环。
+> 贴面经 → 自动解析 → 岗位匹配 → 弱点攻克。你只管贴，剩下的交给 AI。
 
-## What it does
+## 它能干什么
 
-把每次面试转化为**可检索、可追踪、可改进**的结构化资产。不生成完整简历——专注积累与备战。
+把每次面试变成**可检索、可追踪、可改进**的结构化资产。不生成完整简历——专注积累与备战。
 
-| 模式 | 触发 | 产出 |
-|------|------|------|
-| **面试复盘** | 贴面经/复盘文本 | SQLite 存储 + 三段反馈 + 错题本检测 |
-| **岗位分析** | 贴 JD | 四维度经历匹配 + 面试备战警告 + 简历Bullet(含岗位映射) + 补齐方案 + 项目复盘 + 思维训练 + 面试准备 |
-| **批量处理** | "处理待处理岗位" | 对所有待投递岗位跑通岗位分析全流程 |
-| **错题练习** | "错题本" | 弱点聚类 + v1/v2/v3 答案版本管理 |
+| 模式 | 你做什么 | AI 自动做什么 |
+|------|---------|-------------|
+| **面试复盘** | 贴面经/复盘文本 | 解析问答 → 评估质量 → 生成三段反馈 → 检测错题候选 |
+| **岗位分析** | 贴 JD | 四维度匹配经历 → 写简历Bullet → 生成补齐方案/项目复盘/思维训练/面试准备 |
+| **批量处理** | 说"处理待处理岗位" | 自动遍历所有待投递岗位，跑通全流程 |
+| **错题练习** | 说"错题本" | 聚类弱点 → 生成 v1/v2/v3 三个版本答案 |
 
-## Installation
+## 安装
 
-### Claude Code (CLI)
+### Claude Code（终端）
 
 ```bash
-# 1. Add the marketplace
 claude plugin marketplace add YaaLO-o/resume-agent
-
-# 2. Install the plugin
 claude plugin install resume-agent@resume-agent
 ```
 
-### Claude Cowork
+### Claude Cowork（桌面端）
 
-1. Open **Customize** (bottom-left)
-2. Go to **Browse plugins** → **Personal** → **+**
-3. Select **Add marketplace from GitHub**
-4. Enter: `YaaLO-o/resume-agent`
+1. 打开 **Customize**（左下角）
+2. 进入 **Browse plugins** → **Personal** → **+**
+3. 选 **Add marketplace from GitHub**
+4. 输入：`YaaLO-o/resume-agent`
 
-## Quick Start
+## 快速上手
+
+安装完成后，直接在对话中使用：
 
 ```
 # 面试复盘：贴你的面经
-今天面了字节的产品岗，面试官问了...
+今天面了字节的产品岗，面试官问了xxx，我回答了xxx...
 
 # 岗位分析：贴 JD
-岗位职责：负责xxx...
+岗位职责：负责xxx...任职要求：xxx...
 
-# 批量处理
+# 批量处理：一键处理所有待投递
 处理待处理岗位
 
 # 错题练习
 错题本
 ```
 
-## How It Works
-
-### Skills = 面试知识框架
-
-`resume-agent` skill 加载候选人身份、写作铁律、ATS 规则、匹配算法等面试备战知识。Claude 在对话中自动应用。
-
-### Commands = 四模式流水线
-
-| Command | 说明 |
-|---------|------|
-| `/resume-agent:interview-review` | 面试复盘：解析面经 → 结构化存储 → 生成三段反馈 |
-| `/resume-agent:job-analysis` | 岗位分析：JD解析 → 经历匹配 → 简历Bullet → 补齐方案 → 项目复盘 → 思维训练 → 面试准备 |
-| `/resume-agent:batch-process` | 批量处理：读取投递追踪表 → 对每条待处理岗跑通全流程 |
-| `/resume-agent:mistake-practice` | 错题练习：弱点聚类 → 答案版本管理 |
-
-### 反馈回路
+## 工作原理
 
 ```
-面试复盘 → SQLite + markdown → 岗位分析检索历史 → 面试备战警告 → 面试 → 复盘 → 循环 → 错题练习攻克弱点
+你贴面经 → Claude 自动解析问答对、评估回答质量、分类问题类型
+         → 存入结构化数据 + 生成三段反馈
+         → 下次分析岗位时，自动检索历史面试数据
+         → 交叉匹配弱点 → 生成面试备战警告
+         → 面试 → 复盘 → 循环 → 错题攻克
 ```
 
 每次复盘都在喂养下一次面试准备。
 
-## Requirements
+## 四个命令
 
-- Claude Code 或 Claude Cowork
+| 命令 | 说明 |
+|------|------|
+| `/resume-agent:interview-review` | 面试复盘：解析面经 → 结构化存储 → 三段反馈 |
+| `/resume-agent:job-analysis` | 岗位分析：JD解析 → 经历匹配 → 简历Bullet → 补齐方案 → 项目复盘 → 思维训练 → 面试准备 |
+| `/resume-agent:batch-process` | 批量处理：读取投递追踪表 → 对每条待处理岗跑通全流程 |
+| `/resume-agent:mistake-practice` | 错题练习：弱点聚类 → 答案版本管理 |
 
-## Optional: Excel 数据层增强
+## Excel 模板（可选增强）
 
-本 skill 为纯 Markdown 包，核心功能由 Claude 直接完成。如需更强的数据持久化和批量处理能力，可搭配 Python 数据层使用：
+本包自带 3 个空白 Excel 模板，**下载即用**：
 
-| 能力 | 纯 skill（本包） | + Excel 数据层 |
-|------|-----------------|---------------|
-| 面试复盘 | 聊天输出反馈 | SQLite 存储 + markdown 镜像 |
-| 岗位分析 | 聊天输出 Bullet | 写入「简历Bullet」sheet，按公司+岗位归档 |
-| 批量处理 | 逐条手动贴 JD | 读取投递追踪表，自动批量跑通全流程 |
-| 错题练习 | 聊天查看 | SQLite 统计弱点频率 + 答案版本管理 |
-| 追踪回填 | 手动记录 | 自动回填投递追踪表各 sheet |
-
-数据层为独立项目，需要 Python 3.10+ 和 openpyxl。
-
-### 空白模板
-
-本包提供 3 个空白 Excel 模板，下载即用：
-
-| 模板 | 用途 | Sheet |
-|------|------|-------|
+| 模板 | 用途 | 包含 Sheet |
+|------|------|-----------|
 | `templates/投递追踪模板.xlsx` | 投递管理主表 | 投递追踪、简历Bullet、补齐方案、项目复盘、思维训练、面试准备、学习计划 |
-| `templates/复盘导入模板.xlsx` | 面试复盘批量导入 | 面试复盘导入（序号/公司/岗位/日期/轮次/问题/类型/质量/卡壳/标签/改进） |
-| `templates/复盘追踪模板.xlsx` | 岗位复盘追踪 | 复盘追踪（匹配度评分、弱点标签、经历映射策略） |
+| `templates/复盘导入模板.xlsx` | 面试复盘批量导入 | 问答级导入（公司/岗位/日期/轮次/问题/类型/质量/卡壳/标签） |
+| `templates/复盘追踪模板.xlsx` | 岗位复盘追踪 | 匹配度评分、弱点标签、经历映射策略 |
 
-**使用方式**：下载模板 → 填入你的数据 → 配合数据层脚本自动处理，或直接手动使用。
+### 使用方式
 
-## Customization
+**你只需要做一件事：在「投递追踪」sheet 填写公司和岗位名称。**
 
-### 修改候选人信息
+其他所有列（岗位类型、匹配方向、主力经历、简历Bullet、补齐方案、项目复盘……）全部由 AI 自动解析填充。
 
-编辑 `skills/resume-agent/SKILL.md` 中的「候选人信息」部分。
+```
+第 1 步：下载「投递追踪模板.xlsx」
+第 2 步：在「投递追踪」sheet 填写：公司名 + 岗位名 + JD原文
+第 3 步：对 Claude 说"处理待处理岗位"
+第 4 步：AI 自动跑通全流程，回填所有 sheet
+```
 
-### 修改经历库
+| 你需要填的 | AI 自动完成的 |
+|-----------|-------------|
+| 公司名 | 岗位类型判定 |
+| 岗位名 | 匹配方向分析 |
+| JD 原文 | 主力经历推荐 |
+| — | 简历 Bullet（含公司+岗位标注） |
+| — | 能力缺口 + 补齐方案 |
+| — | 项目复盘（灵魂三问+三种时长版本） |
+| — | 产品思维训练 |
+| — | 面试准备清单 |
+| — | 学习计划 |
 
-在项目的 `database/` 目录下编辑对应的 markdown 文件：
+## 个性化配置
+
+### 填写你的信息
+
+编辑 `skills/resume-agent/SKILL.md` 中的「候选人信息」部分，把占位符替换为你的真实信息：
+
+```markdown
+## 候选人信息
+
+- {你的姓名}，{你的学校} {你的专业} {你的届别}
+- 求职方向：{方向1}、{方向2}
+- 核心经历：{经历1} + {经历2} + {经历3}
+```
+
+### 添加你的经历
+
+在 `database/` 目录下编辑对应的 markdown 文件：
 - `internships.md` — 实习经历
 - `projects.md` — 项目经历
 - `competitions.md` — 竞赛获奖
 - `leadership.md` — 社会实践
 
-### 修改匹配规则
-
-编辑 `rules/matching-rules.md` 中的四维度打分权重。
-
-## Architecture
+## 项目结构
 
 ```
 resume-agent/
-├── .claude-plugin/
-│   ├── marketplace.json     # Marketplace manifest
-│   └── plugin.json          # Plugin manifest
-├── skills/
-│   └── resume-agent/
-│       └── SKILL.md         # 核心 skill（知识框架 + 模式路由）
+├── .claude-plugin/           # 插件清单
+├── skills/resume-agent/
+│   └── SKILL.md              # 核心 skill（模式路由 + 约束规则）
 ├── commands/
-│   ├── interview-review.md  # 模式一：面试复盘
-│   ├── job-analysis.md      # 模式二：岗位分析
-│   ├── batch-process.md     # 模式三：批量处理
-│   └── mistake-practice.md  # 模式四：错题练习
-├── templates/               # 空白 Excel 模板
-│   ├── 投递追踪模板.xlsx     # 7 个 sheet 的投递管理主表
-│   ├── 复盘导入模板.xlsx     # 问答级面试复盘导入
-│   └── 复盘追踪模板.xlsx     # 岗位复盘追踪
-├── README.md                # 本文件
-├── CLAUDE.md                # Agent guidance
-└── LICENSE                  # MIT
+│   ├── interview-review.md   # 模式一：面试复盘
+│   ├── job-analysis.md       # 模式二：岗位分析
+│   ├── batch-process.md      # 模式三：批量处理
+│   └── mistake-practice.md   # 模式四：错题练习
+├── templates/                # 空白 Excel 模板
+│   ├── 投递追踪模板.xlsx
+│   ├── 复盘导入模板.xlsx
+│   └── 复盘追踪模板.xlsx
+├── README.md
+├── CLAUDE.md
+└── LICENSE                   # MIT
 ```
 
-## Author
+## 环境要求
 
-Your Name
-
-## License
-
-MIT
+- Claude Code 或 Claude Cowork
+- 无其他依赖（纯 skill，开箱即用）
 
 ## License
 
