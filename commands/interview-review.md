@@ -1,19 +1,20 @@
-# 模式一：面试复盘
+# 面试复盘
 
-用户发送面试复盘/面经/面试反馈文本时执行。若内容是录音文件，先转写为文本。
+用户发送面试复盘/面经/面试反馈文本时触发。仅接受文字输入（Word/TXT/Markdown 文件或直接粘贴文本）。
 
 ## Step 1：接收并解析
 
-1. 接收 raw_text
-2. 若为录音文件 → 转写为文本
-3. 提取元信息（公司、岗位、日期、轮次）
+1. 接收文字内容（粘贴文本或上传 .txt/.md/.docx 文件）
+2. 提取元信息（公司、岗位、日期、轮次）
+
+> **不支持音频文件**。如用户提供录音，请提示："请先将录音转写为文字，再贴给我。"
 
 ## Step 2：结构化解析
 
 让 Claude 将原始文本解析为结构化 JSON：
 
 ```
-你是面试复盘分析器。候选人：{姓名}，{学校名称} {专业} {届别}，求职方向 {求职方向}。
+你是面试复盘分析器。候选人信息见系统设定。
 
 解析以下面试复盘文本，抽取所有问答对。不要概括或跳过。
 
@@ -42,11 +43,12 @@
 
 将解析结果保存为结构化数据：
 
-1. **interviews**：元信息 (company, position, date, round, overall_rating, tags)
-2. **interview_questions**：每个问答对一行 (question_text, question_type, answer_rating, good_flag, stuck_flag, tags)
-3. **processing_logs**：记录处理步骤
+**有 SQLite 时**：写入 `database/interview.db`，用 `with conn:` 事务包裹。
+- interviews 表：元信息
+- interview_questions 表：问答明细
+- processing_logs 表：处理日志
 
-> 如配置了 SQLite 数据库，写入 `database/interview.db` 并用事务包裹。否则以 Markdown 格式存储。
+**无 SQLite 时**：以 Markdown 格式存储到 `database/interview-log.md`，追加写入。
 
 ## Step 5：生成三段反馈
 
@@ -67,12 +69,15 @@
 - 若同类问题已有 ≥2 次记录 → 自动加入 mistake_book
 - 更新 frequency 计数
 
+**有 SQLite 时**：写入 mistake_book 表。
+**无 SQLite 时**：追加到 `database/mistake-book.md`。
+
 ## Step 7：更新 markdown 记录
 
 **7a. 追加到 interview-log.md**：
 
 ```markdown
-## [公司] 岗位 | 日期 | 轮次 | ID:{interview_id}
+## [公司] 岗位 | 日期 | 轮次
 
 **岗位类型**: {岗位类型}
 **涉及经历**: {经历1}, {经历2}
@@ -84,8 +89,8 @@
 | 1 | xxx  | 简历深挖 | 中 | 否 | 补充数字 |
 ```
 
-**7b. 若发现新事实**（new_facts 非空）：更新对应 `database/*.md` 经历文件的原子块。
+**7b. 若发现新事实**（new_facts 非空）：追加到对应 `database/*.md` 经历文件（不覆盖已有内容）。
 
 ## Step 8：展示结果
 
-在对话中展示三段反馈，提醒用户可导出为 Excel。
+在对话中展示三段反馈。

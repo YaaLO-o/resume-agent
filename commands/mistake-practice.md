@@ -1,12 +1,14 @@
-# 模式四：错题练习
+# 错题练习
 
 用户说"错题本""练习模式""mistake""弱点练习"时触发。
 
 ## Step 1：查询弱点数据
 
+**有 SQLite 时**，执行以下查询：
+
 ```sql
 -- Top 弱点类型
-SELECT question_type, COUNT(*) as cnt, 
+SELECT question_type, COUNT(*) as cnt,
        SUM(CASE WHEN answer_rating='差' THEN 1 ELSE 0 END) as bad_cnt,
        SUM(CASE WHEN stuck_flag=1 THEN 1 ELSE 0 END) as stuck_cnt
 FROM interview_questions
@@ -25,6 +27,12 @@ ORDER BY i.date DESC;
 SELECT * FROM mistake_book ORDER BY frequency DESC;
 ```
 
+> **SQL 安全**：上述查询为静态模板，不拼接用户输入。如需动态查询，使用参数化查询（`?` 占位符）。
+
+**无 SQLite 时**，从以下 markdown 文件读取：
+- `database/interview-log.md` — 找「回答质量: 差」和「卡壳: 是」的记录
+- `database/mistake-book.md` — 读取错题本（如存在）
+
 ## Step 2：弱点归类展示
 
 ```
@@ -41,7 +49,8 @@ SELECT * FROM mistake_book ORDER BY frequency DESC;
 - **v2 (优化版)**：AI 建议改进版
 - **v3 (进阶版)**：深度优化版（结合追问角度）
 
-存入 `interview_questions.versions_json`。
+**有 SQLite 时**：存入 `interview_questions.versions_json`。
+**无 SQLite 时**：在对话中直接展示三个版本。
 
 ## Step 4：生成练习建议
 
