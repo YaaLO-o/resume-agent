@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "resume-agent",
+  "version": "1.0.0",
+  "description": "面试复盘积累系统。四模式：面试复盘、岗位分析、批量处理、错题练习。为求职者打造的结构化面试备战闭环。",
+  "owner": {
+    "name": "Your Name",
+    "email": "you@example.com",
+    "url": "https://github.com/YaaLO-o"
+  },
+  "plugins": [
+    {
+      "name": "resume-agent",
+      "description": "面试复盘积累系统：贴面经→结构化存储+三段反馈；贴JD→匹配经历+简历Bullet+补齐方案+项目复盘+思维训练；批量处理待投递岗位；错题本弱点攻克。",
+      "source": ".",
+      "category": "career"
+    }
+  ]
+}

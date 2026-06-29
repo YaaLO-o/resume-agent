@@ -1,0 +1,19 @@
+# Private maintainer-only files
+CLAUDE.local.md
+_Internal/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Data (user-specific)
+database/interview.db
+
+# User Excel files (not templates)
+投递追踪.xlsx
+复盘追踪.xlsx

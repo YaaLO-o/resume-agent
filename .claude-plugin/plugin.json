@@ -1,0 +1,23 @@
+{
+  "name": "resume-agent",
+  "version": "1.0.0",
+  "description": "面试复盘积累系统。四模式：面试复盘（贴面经→结构化存储+三段反馈）、岗位分析（贴JD→匹配经历+备战警告+简历Bullet+补齐方案+项目复盘+思维训练+面试准备）、批量处理（处理待投递岗位→全流程同步）、错题练习（弱点聚类+答案版本管理）。",
+  "author": {
+    "name": "Your Name",
+    "email": "you@example.com",
+    "url": "https://github.com/YaaLO-o"
+  },
+  "keywords": [
+    "interview",
+    "resume",
+    "career",
+    "job-search",
+    "product-management",
+    "interview-prep",
+    "面试",
+    "简历",
+    "求职"
+  ],
+  "homepage": "https://github.com/YaaLO-o/resume-agent",
+  "license": "MIT"
+}
