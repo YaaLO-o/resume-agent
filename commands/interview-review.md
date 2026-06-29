@@ -43,12 +43,12 @@
 
 将解析结果保存为结构化数据：
 
-**有 SQLite 时**：写入 `database/interview.db`，用 `with conn:` 事务包裹。
+**有 SQLite 时**：写入 `database/interview.db`，所有写入用事务包裹。
 - interviews 表：元信息
-- interview_questions 表：问答明细
+- interview_questions 表：问答明细（含 versions_json 列用于答案版本管理）
 - processing_logs 表：处理日志
 
-**无 SQLite 时**：以 Markdown 格式存储到 `database/interview-log.md`，追加写入。
+**无 SQLite 时**：以 Markdown 格式追加到 `database/interview-log.md`。
 
 ## Step 5：生成三段反馈
 
@@ -62,12 +62,15 @@
 
 若信息不足（多个问答对 confidence_score < 0.5），附加「需要补充」清单。
 
+**存储反馈**：将三段反馈追加到 `database/interview-log.md` 对应面试记录下方，确保历史反馈可回溯。
+
 ## Step 6：检查错题本候选
 
 识别需要加入错题本的问答：
 - answer_rating='差' 或 stuck_flag=True 的问答对
-- 若同类问题已有 ≥2 次记录 → 自动加入 mistake_book
-- 更新 frequency 计数
+- 若同类问题已有 ≥2 次记录 → **提示用户确认**后加入 mistake_book
+
+> 不自动加入错题本。展示候选问题列表，让用户选择："以下问题建议加入错题本，是否确认？"
 
 **有 SQLite 时**：写入 mistake_book 表。
 **无 SQLite 时**：追加到 `database/mistake-book.md`。
@@ -87,6 +90,9 @@
 | # | 问题 | 类型 | 回答质量 | 卡壳 | 改进方向 |
 |---|------|------|----------|------|----------|
 | 1 | xxx  | 简历深挖 | 中 | 否 | 补充数字 |
+
+### 三段反馈
+{Step 5 生成的反馈内容}
 ```
 
 **7b. 若发现新事实**（new_facts 非空）：追加到对应 `database/*.md` 经历文件（不覆盖已有内容）。

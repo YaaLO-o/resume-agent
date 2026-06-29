@@ -5,7 +5,6 @@
   "description": "面试复盘积累系统。五模式：导入简历、面试复盘、岗位分析、批量处理、错题练习。为求职者打造的结构化面试备战闭环。",
   "owner": {
     "name": "YaaLO-o",
-    "email": "you@example.com",
     "url": "https://github.com/YaaLO-o"
   },
   "plugins": [

@@ -33,6 +33,8 @@ SELECT * FROM mistake_book ORDER BY frequency DESC;
 - `database/interview-log.md` — 找「回答质量: 差」和「卡壳: 是」的记录
 - `database/mistake-book.md` — 读取错题本（如存在）
 
+> **注意**：无 SQLite 时，Markdown 文件的查询精度有限。若数据量大（>20 条面试记录），建议配置 SQLite 以获得准确的弱点统计。
+
 ## Step 2：弱点归类展示
 
 ```
@@ -50,7 +52,7 @@ SELECT * FROM mistake_book ORDER BY frequency DESC;
 - **v3 (进阶版)**：深度优化版（结合追问角度）
 
 **有 SQLite 时**：存入 `interview_questions.versions_json`。
-**无 SQLite 时**：在对话中直接展示三个版本。
+**无 SQLite 时**：在对话中直接展示三个版本，并追加到 `database/mistake-book.md`（含版本记录）。
 
 ## Step 4：生成练习建议
 
